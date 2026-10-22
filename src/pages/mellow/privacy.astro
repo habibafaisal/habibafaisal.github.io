@@ -1,0 +1,45 @@
+---
+import Base from '../../layouts/Base.astro';
+import { EMAIL } from '../../consts';
+---
+
+<Base title="Mellow privacy policy" description="Privacy policy for Mellow, the dark mode and two-page view extension for Google Docs.">
+  <h1>Mellow privacy policy</h1>
+  <div class="prose">
+    <p class="muted">Last updated: 22 October 2026</p>
+
+    <p>
+      Mellow is a Chrome extension that changes how Google Docs™ looks on your screen: a dark theme
+      and an optional two-page view.
+    </p>
+
+    <h2>What Mellow collects</h2>
+    <p>
+      Nothing. Mellow does not collect, store, sell or share any personal data, document content,
+      browsing history or usage analytics. It has no servers and makes no network requests of its own.
+    </p>
+
+    <h2>What Mellow stores</h2>
+    <p>
+      Two settings, dark mode on or off and two-page view on or off, saved in your own Chrome profile
+      using Chrome's built-in storage so they apply across your documents. Uninstalling Mellow removes them.
+    </p>
+
+    <h2>Where Mellow runs</h2>
+    <p>
+      Only on Google Docs document pages (docs.google.com/document). It changes colours and page
+      layout on your screen; it does not read, change or send the contents of your documents.
+    </p>
+
+    <h2>Payments</h2>
+    <p>
+      Mellow is free. The optional supporter link opens a checkout run by Polar, which handles that
+      payment under its own privacy policy. Mellow itself never sees payment details.
+    </p>
+
+    <h2>Contact</h2>
+    <p>Questions: <a href={`mailto:${EMAIL}`}>{EMAIL}</a></p>
+
+    <p class="muted">Google Docs is a trademark of Google LLC. Mellow is not affiliated with Google.</p>
+  </div>
+</Base>
