@@ -1,0 +1,57 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPosts, formatDate, url } from '../../lib/posts';
+
+const posts = await getPosts();
+
+// Writing published on other sites. Newest first.
+const elsewhere = [
+  {
+    title: 'From Express to NestJS: Navigating the Learning Curve',
+    href: 'https://medium.com/@habibafaisal8/from-express-to-nestjs-navigating-the-learning-curve-747f5c601877',
+    date: new Date('2025-04-18'),
+    description: 'Modules, decorators, DTOs and dependency injection, for someone coming from Express. On Medium.',
+  },
+];
+---
+
+<Base title="Writing" ogImage="/og/writing.png" description="Notes on fintech and credit systems, unfamiliar domains, and product work as an engineer.">
+  <h1>Writing</h1>
+  <p class="muted">
+    Fintech and credit systems, building in unfamiliar domains, and product work as an engineer.
+    <a href={url('/rss.xml')}>RSS</a>.
+  </p>
+
+  {
+    posts.length > 0 ? (
+      <ul class="list post-list" style="margin-top:2.25rem">
+        {posts.map((p) => (
+          <li>
+            <time datetime={p.data.date.toISOString()}>{formatDate(p.data.date)}</time>
+            <span>
+              <a class="title" href={url(`/writing/${p.id}/`)}>{p.data.title}</a>
+              <span class="desc">{p.data.description}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>Nothing here yet.</p>
+    )
+  }
+
+  <h2 class="section-title">Elsewhere</h2>
+  <ul class="list post-list">
+    {
+      elsewhere.map((p) => (
+        <li>
+          <time datetime={p.date.toISOString()}>{formatDate(p.date)}</time>
+          <span>
+            <a class="title" href={p.href}>{p.title}</a>
+            <span class="desc">{p.description}</span>
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</Base>

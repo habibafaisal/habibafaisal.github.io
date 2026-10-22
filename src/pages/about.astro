@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+import { EMAIL, LINKS, LOCATION } from '../consts';
+import { url } from '../lib/posts';
+import { projects } from '../data/work';
+---
+
+<Base title="About" ogImage="/og/about.png" description="Who I am and how I work.">
+  <h1>About</h1>
+  <div class="prose">
+    <p>
+      I’m Habiba Faisal, a software engineer from {LOCATION}. I’ve spent about three years in startups,
+      mostly working directly with founders, across frontend, backend, mobile and product.
+    </p>
+    <p>
+      There’s a pattern to my work. I join a company in a domain I don’t know and learn it well
+      enough to build the central system. At Sail Wellness that was health and toxicology. At
+      Livedin it was property management in Saudi Arabia. At a stealth US freight-factoring startup it was invoice finance,
+      where I built the funding-decision engine, the ledger and money movement.
+    </p>
+
+    <h2>How I work</h2>
+    <p>
+      What I’m good at is translation between the product, the domain
+      and the code. If I understand the business and the operator’s day well enough, a small change
+      can have an outsized effect.
+    </p>
+    <p>
+      I like staying close to operations and the business. When someone asks for a feature, I look
+      for the real pain behind it: in reviews, in engagement, and in the things that don’t show up in
+      metrics. Then I fix it, and check whether the fix worked.
+    </p>
+    <p>
+      I care about detail, and Apple is a big influence there. Soon after I joined Sail, the app felt
+      wrong, even though it matched the design file. I traced it to the font. Changing it changed the
+      whole app.
+    </p>
+
+    <h2>Earlier</h2>
+    <p>
+      I studied computer science at SZABIST in Karachi and graduated as the silver medalist. Right
+      after, I taught there for a semester as adjunct faculty: Software Development and Construction.
+      Explaining things to a room is still how I check whether I understand them.
+    </p>
+    <p>
+      I was once acknowledged by the US Department of Defense for a responsible vulnerability
+      disclosure.
+    </p>
+
+    <h2>Side projects</h2>
+    {
+      projects.map((p) => (
+        <p>
+          <a href={p.href}>{p.name}</a>. {p.body}
+        </p>
+      ))
+    }
+
+    <h2>Contact</h2>
+    <p>
+      The best way to reach me is email: <a href={`mailto:${EMAIL}`}>{EMAIL}</a>. My
+      <a href={url('/habiba-faisal-resume.pdf')}>résumé</a> is a one-page PDF. I’m also on
+      {LINKS.map((l, i) => (<>{i > 0 && (i === LINKS.length - 1 ? ' and ' : ', ')}<a href={l.href}>{l.label}</a></>))}.
+    </p>
+  </div>
+</Base>

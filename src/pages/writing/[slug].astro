@@ -1,0 +1,34 @@
+---
+import Base from '../../layouts/Base.astro';
+import { render } from 'astro:content';
+import { getPosts, formatDate, url } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts(); // drafts excluded
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Base title={post.data.title} description={post.data.description} type="article" date={post.data.date} ogImage={`/og/writing/${post.id}.png`}>
+  <article>
+    <header class="post-header">
+      <h1>{post.data.title}</h1>
+      <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+      {
+        post.data.updated && (
+          <div class="mono">
+            Updated <time datetime={post.data.updated.toISOString()}>{formatDate(post.data.updated)}</time>
+          </div>
+        )
+      }
+      {post.data.tags && post.data.tags.length > 0 && <div class="mono">{post.data.tags.join(', ')}</div>}
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+  <p class="back"><a href={url('/writing/')}>← All writing</a></p>
+</Base>

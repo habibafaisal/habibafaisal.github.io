@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import { work, projects } from '../data/work';
+---
+
+<Base title="Work" ogImage="/og/work.png" description="Where I’ve worked, what I built, and the decisions I made.">
+  <h1>Work</h1>
+  <p class="muted">Newest first.</p>
+
+  {
+    work.map((w) => (
+      <section class="entry" id={w.id}>
+        <h2>{w.org}</h2>
+        <p class="label" style="margin:0 0 0.35rem">{w.years}</p>
+        <p class="role">
+          {w.role}. {w.context}
+        </p>
+        {w.body.map((para) => <p>{para}</p>)}
+        {w.links && w.links.length > 0 && (
+          <p class="label">
+            {w.links.map((l, i) => (
+              <>
+                {i > 0 && ' · '}
+                <a href={l.href}>{l.label}</a>
+              </>
+            ))}
+          </p>
+        )}
+      </section>
+    ))
+  }
+
+  <h2 class="section-title">Side projects</h2>
+  {
+    projects.map((p) => (
+      <section class="entry">
+        <h3>
+          {p.href && p.href.startsWith('http') ? <a href={p.href}>{p.name}</a> : p.name}
+        </h3>
+        <p>{p.body}</p>
+      </section>
+    ))
+  }
+</Base>

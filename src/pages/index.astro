@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import { NAME, SITE_DESCRIPTION, EMAIL } from '../consts';
+
+const description =
+  'Habiba Faisal, software engineer in Karachi. Core systems for a US invoice-factoring fintech, ingredient-safety scoring at Sail Wellness, and two property-management apps at Livedin.';
+import { work } from '../data/work';
+import { getPosts, formatDate, url } from '../lib/posts';
+
+const posts = (await getPosts()).slice(0, 5);
+---
+
+<Base description={description} ogImage="/og/home.png">
+  <h1>{NAME}</h1>
+  <p class="lede">{SITE_DESCRIPTION}</p>
+
+  <p>
+    I’ve spent about three years in startups, mostly working directly with founders, across
+    frontend, backend, mobile and product.
+  </p>
+  <p>
+    Email me at <a href={`mailto:${EMAIL}`}>{EMAIL}</a>, or read my
+    <a href={url('/habiba-faisal-resume.pdf')}>résumé</a>.
+  </p>
+
+  <h2 class="section-title">Selected work</h2>
+  <ul class="list">
+    {
+      work.map((w) => (
+        <li>
+          <a class="title" href={url(`/work/#${w.id}`)}>{w.org}</a>
+          <span class="desc">{w.summary}</span>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="more"><a href={url('/work/')}>All work and projects →</a></p>
+
+  <h2 class="section-title">Writing</h2>
+  {
+    posts.length > 0 ? (
+      <ul class="list post-list">
+        {posts.map((p) => (
+          <li>
+            <time datetime={p.data.date.toISOString()}>{formatDate(p.data.date)}</time>
+            <a href={url(`/writing/${p.id}/`)}>{p.data.title}</a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="muted">Nothing yet.</p>
+    )
+  }
+  <p class="more"><a href={url('/writing/')}>All writing →</a></p>
+</Base>

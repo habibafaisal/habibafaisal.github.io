@@ -1,0 +1,10 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/posts';
+---
+
+<Base title="Not found" ogImage="/og/home.png" description="This page doesn’t exist." noindex>
+  <h1>Not found</h1>
+  <p>There’s nothing at this address. It may have moved, or the link may be wrong.</p>
+  <p><a href={url('/')}>Go to the home page</a> or <a href={url('/writing/')}>see all writing</a>.</p>
+</Base>
