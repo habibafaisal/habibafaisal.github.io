@@ -35,7 +35,7 @@ import { work, projects } from '../data/work';
     projects.map((p) => (
       <section class="entry">
         <h3>
-          {p.href && p.href.startsWith('http') ? <a href={p.href}>{p.name}</a> : p.name}
+          {p.href ? <a href={p.href}>{p.name}</a> : p.name}
         </h3>
         <p>{p.body}</p>
       </section>

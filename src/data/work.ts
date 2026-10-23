@@ -85,6 +85,11 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    name: 'Mellow',
+    href: '/mellow/',
+    body: 'A Chrome extension that gives Google Docs a real dark mode: the page itself goes dark while images keep their true colours. It also shows two pages side by side, like an open book. Free.',
+  },
+  {
     name: 'Swing Badminton',
     href: 'https://swing-badminton.letsplayyy.workers.dev',
     body: 'A badminton game in the browser, controlled by tracking your hand through the webcam. Play solo against the computer, or two players on one webcam. Free to play.',

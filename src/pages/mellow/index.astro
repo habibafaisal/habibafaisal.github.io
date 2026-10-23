@@ -1,0 +1,209 @@
+---
+import Base from '../../layouts/Base.astro';
+import { NAME, EMAIL } from '../../consts';
+import { url } from '../../lib/posts';
+
+const STORE_URL =
+  'https://chromewebstore.google.com/detail/mellow-%E2%80%93-dark-mode-for-go/doaknapcjdphohdangbbmadbojhpbepf';
+const SUPPORT_URL = 'https://buy.polar.sh/polar_cl_Z03dK5y6rX6AVr4WXxKnlp7zCZHrgd96XRqsm1yQ2uE';
+
+const title = 'Mellow: dark mode for Google Docs that keeps images in true colour';
+const description =
+  'Mellow is a free Chrome extension that gives Google Docs a real dark mode: dark page, light text, dark menus and toolbar, with images left in their true colours. It also shows two pages side by side.';
+
+// Questions people actually type into search and AI assistants. The same text feeds
+// the visible FAQ and the FAQPage structured data, so the two never drift apart.
+const faq = [
+  {
+    q: 'Does Google Docs have a dark mode?',
+    a: 'Not on desktop. The Google Docs mobile apps have a dark theme, but in a desktop browser Docs only offers a light page. Mellow adds a dark mode to Google Docs in Chrome.',
+  },
+  {
+    q: 'How is Mellow different from other Google Docs dark mode extensions?',
+    a: 'Most dark mode extensions either darken only the area around the page, leaving the page itself white, or invert the colours of the whole document, which turns photos and charts into negatives. Mellow recolours what Google Docs draws on its page canvas, so the page goes dark and the text goes light while images keep their real colours.',
+  },
+  {
+    q: 'Can I see two pages side by side in Google Docs?',
+    a: 'Yes, with Mellow’s book mode. The page you are editing stays where it is and the next page appears beside it, like an open book. Click the right-hand page to turn to it. Press Option+Shift+B (Alt+Shift+B on Windows) to switch it on or off.',
+  },
+  {
+    q: 'Is Mellow free?',
+    a: 'Yes. Mellow is free with no account and no paid tier. There is an optional $5 supporter link if you want to say thanks.',
+  },
+  {
+    q: 'Does Mellow read my documents?',
+    a: 'No. Mellow collects no data and makes no network requests. It only changes how Google Docs looks on your screen, and stores two settings (dark mode and book mode on or off) in your Chrome profile.',
+  },
+  {
+    q: 'Does Mellow work with Google Sheets or Slides?',
+    a: 'Not yet. Mellow runs on Google Docs documents only (docs.google.com/document).',
+  },
+  {
+    q: 'Will printing or exporting come out dark?',
+    a: 'No. Mellow changes only what you see on screen. The document itself, and anything you print, download or share, keeps its normal colours.',
+  },
+];
+
+const appLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Mellow',
+  alternateName: 'Mellow – Dark Mode for Google Docs',
+  description,
+  applicationCategory: 'BrowserApplication',
+  applicationSubCategory: 'Chrome extension',
+  operatingSystem: 'Chrome',
+  url: new URL(url('/mellow/'), Astro.site).href,
+  downloadUrl: STORE_URL,
+  installUrl: STORE_URL,
+  image: new URL(url('/mellow/icon.png'), Astro.site).href,
+  isAccessibleForFree: true,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  featureList: [
+    'Dark mode for Google Docs with a dark page, not just dark margins',
+    'Images and charts keep their true colours',
+    'Dark menus, toolbar and sidebars',
+    'Two-page book view',
+    'Keyboard shortcuts',
+    'Settings sync across your Chrome profile',
+  ],
+  author: { '@type': 'Person', name: NAME, url: new URL(url('/'), Astro.site).href },
+});
+
+const faqLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+});
+---
+
+<Base title={title} description={description} ogImage="/og/mellow.png">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={appLd} />
+    <script type="application/ld+json" set:html={faqLd} />
+  </Fragment>
+
+  <h1>Mellow: dark mode for Google Docs</h1>
+  <p class="lede">
+    A free Chrome extension that makes the Google Docs page itself dark, with light text, while your
+    images keep their true colours. Plus a two-page view, like an open book.
+  </p>
+
+  <p class="cta">
+    <a class="button" href={STORE_URL}>Add Mellow to Chrome, free</a>
+  </p>
+
+  <div class="prose">
+    <h2>What Mellow does</h2>
+    <ul>
+      <li>
+        <strong>Real dark mode for Google Docs.</strong> The page goes dark, not just the grey area
+        around it. Text, menus, the toolbar and sidebars go dark too.
+      </li>
+      <li>
+        <strong>Images stay in true colour.</strong> Photos, logos and charts look the way they
+        should, not like photo negatives.
+      </li>
+      <li>
+        <strong>Two pages side by side.</strong> Book mode shows the next page beside the one you’re
+        editing. Click the right-hand page to turn to it; scrolling moves a page at a time.
+      </li>
+      <li>
+        <strong>Keyboard shortcuts.</strong> <kbd>Option+Shift+D</kbd> for dark mode,
+        <kbd>Option+Shift+B</kbd> for book mode (Alt+Shift on Windows), or use the toolbar button.
+      </li>
+      <li>
+        <strong>Private.</strong> No account, no tracking, no network requests. Your settings sync
+        through your own Chrome profile.
+      </li>
+    </ul>
+
+    <h2>Why most Google Docs dark modes look wrong</h2>
+    <p>
+      Google Docs doesn’t draw your document as ordinary web text. It paints each page onto a
+      canvas. Browser-wide dark mode tools can’t restyle what’s on a canvas, so they usually do one
+      of two things:
+    </p>
+    <ul>
+      <li>
+        darken everything <em>around</em> the page and leave a bright white page in the middle, or
+      </li>
+      <li>
+        invert the colours of the whole page, which flips your images and charts into negatives.
+      </li>
+    </ul>
+    <p>
+      Mellow recolours what Google Docs draws on the page canvas as it draws it. Backgrounds become
+      dark, text becomes light, and images are left alone. You get a dark page that still looks
+      like your document.
+    </p>
+
+    <h2>Install</h2>
+    <ol>
+      <li>Open <a href={STORE_URL}>Mellow on the Chrome Web Store</a> and click <strong>Add to Chrome</strong>.</li>
+      <li>Open or reload any Google Doc. Dark mode is on by default.</li>
+      <li>Click the Mellow icon in the toolbar to switch dark mode or book mode on and off.</li>
+    </ol>
+    <p class="muted">
+      Works in Chrome and other Chromium browsers that install from the Chrome Web Store, such as
+      Edge, Brave and Arc.
+    </p>
+
+    <h2>Questions</h2>
+    {
+      faq.map(({ q, a }) => (
+        <>
+          <h3>{q}</h3>
+          <p>{a}</p>
+        </>
+      ))
+    }
+
+    <h2>Known limitations</h2>
+    <ul>
+      <li>Switching dark mode on or off reloads the document, because Docs has to redraw the page from the start.</li>
+      <li>On a narrow laptop window at 100% zoom, both pages of book mode may not fit with Docs’ tabs sidebar open. Close the sidebar or zoom out to about 90%.</li>
+    </ul>
+
+    <h2>Support and contact</h2>
+    <p>
+      Mellow is built by <a href={url('/')}>{NAME}</a>. Found a bug or have an idea? Email
+      <a href={`mailto:${EMAIL}?subject=Mellow`}>{EMAIL}</a>. If Mellow saves your eyes, you can
+      <a href={SUPPORT_URL}>buy me a coffee ($5)</a>.
+    </p>
+    <p>
+      <a href={url('/mellow/privacy/')}>Privacy policy</a>
+    </p>
+
+    <p class="muted">Google Docs is a trademark of Google LLC. Mellow is not affiliated with Google.</p>
+  </div>
+</Base>
+
+<style>
+  .cta {
+    margin: 1.5rem 0 2rem;
+  }
+  .button {
+    display: inline-block;
+    padding: 0.6rem 1.1rem;
+    border: 1px solid currentColor;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .button:hover {
+    background: var(--text);
+    color: var(--bg);
+  }
+  kbd {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    padding: 0 0.3em;
+    border: 1px solid var(--muted);
+    border-radius: 3px;
+  }
+</style>
