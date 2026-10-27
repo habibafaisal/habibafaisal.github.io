@@ -87,7 +87,7 @@ export const projects: Project[] = [
   {
     name: 'Mellow',
     href: '/mellow/',
-    body: 'A Chrome extension that gives Google Docs a real dark mode: the page itself goes dark while images keep their true colours. It also shows two pages side by side, like an open book. Free.',
+    body: 'A Chrome extension that gives Google Docs a real dark mode: the page itself goes dark while images keep their true colours. Plus a writer sidebar with chapters, notes and a daily word goal. Free, with an optional Pro tier.',
   },
   {
     name: 'Swing Badminton',

@@ -7,9 +7,14 @@ const STORE_URL =
   'https://chromewebstore.google.com/detail/mellow-%E2%80%93-dark-mode-for-go/doaknapcjdphohdangbbmadbojhpbepf';
 const SUPPORT_URL = 'https://buy.polar.sh/polar_cl_Z03dK5y6rX6AVr4WXxKnlp7zCZHrgd96XRqsm1yQ2uE';
 
-const title = 'Mellow: dark mode for Google Docs that keeps images in true colour';
+const VIDEO_ID = '1aaotkSqGLo';
+const VIDEO_URL = `https://youtu.be/${VIDEO_ID}`;
+const PRO_MONTHLY_URL = 'https://buy.polar.sh/polar_cl_gYkmX8tRF7WtCFRAfP6wLE7Z6oQmZnoUR9FDV1Fg6NK';
+const PRO_YEARLY_URL = 'https://buy.polar.sh/polar_cl_Wqr0dvEtFCJUcfa2So0M9ZAsHQs5Vm8lDqH383NBcj8';
+
+const title = 'Mellow for Google Docs: dark mode that keeps images in true colour, plus a writer sidebar';
 const description =
-  'Mellow is a free Chrome extension that gives Google Docs a real dark mode: dark page, light text, dark menus and toolbar, with images left in their true colours. It also shows two pages side by side.';
+  'Mellow is a Chrome extension that gives Google Docs a real dark mode, with images left in their true colours, and a writer sidebar beside your draft: chapters, notes and a daily word goal.';
 
 // Questions people actually type into search and AI assistants. The same text feeds
 // the visible FAQ and the FAQPage structured data, so the two never drift apart.
@@ -20,19 +25,19 @@ const faq = [
   },
   {
     q: 'How is Mellow different from other Google Docs dark mode extensions?',
-    a: 'Most dark mode extensions either darken only the area around the page, leaving the page itself white, or invert the colours of the whole document, which turns photos and charts into negatives. Mellow recolours what Google Docs draws on its page canvas, so the page goes dark and the text goes light while images keep their real colours.',
+    a: 'Most dark mode extensions either darken only the area around the page, leaving the page itself white, or invert the colours of the whole document, which turns photos and charts into negatives. Mellow recolours what Google Docs draws on its page canvas, so the page goes dark and the text goes light while images keep their real colours. It also adds a writer sidebar with chapters, notes and a word goal.',
   },
   {
-    q: 'Can I see two pages side by side in Google Docs?',
-    a: 'Yes, with Mellow’s book mode. The page you are editing stays where it is and the next page appears beside it, like an open book. Click the right-hand page to turn to it. Press Option+Shift+B (Alt+Shift+B on Windows) to switch it on or off.',
+    q: 'Can I write a novel in Google Docs with chapters and notes beside the draft?',
+    a: 'Yes, with Mellow’s writer sidebar. Press Option+Shift+W (Alt+Shift+W on Windows) to open it. Chapters lists your headings so you can jump between them, Notes keeps character and plot cards for each document, and Goal tracks your words today against a daily target.',
   },
   {
     q: 'Is Mellow free?',
-    a: 'Yes. Mellow is free with no account and no paid tier. There is an optional $5 supporter link if you want to say thanks.',
+    a: 'Yes. Dark mode, chapters, the word goal and up to 5 note cards per document are free, with no account. Mellow Pro ($3 a month or $20 a year) removes the note limit.',
   },
   {
     q: 'Does Mellow read my documents?',
-    a: 'No. Mellow collects no data and makes no network requests. It only changes how Google Docs looks on your screen, and stores two settings (dark mode and book mode on or off) in your Chrome profile.',
+    a: 'Mellow reads only what Google Docs already shows on screen, your headings and the word count, to display them in the sidebar. Nothing from your documents leaves your computer. Your settings, notes and goals stay in your own Chrome storage.',
   },
   {
     q: 'Does Mellow work with Google Sheets or Slides?',
@@ -48,7 +53,7 @@ const appLd = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
   name: 'Mellow',
-  alternateName: 'Mellow – Dark Mode for Google Docs',
+  alternateName: 'Mellow for Google Docs',
   description,
   applicationCategory: 'BrowserApplication',
   applicationSubCategory: 'Chrome extension',
@@ -58,16 +63,33 @@ const appLd = JSON.stringify({
   installUrl: STORE_URL,
   image: new URL(url('/mellow/icon.png'), Astro.site).href,
   isAccessibleForFree: true,
-  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  offers: [
+    { '@type': 'Offer', name: 'Free', price: '0', priceCurrency: 'USD' },
+    { '@type': 'Offer', name: 'Mellow Pro, monthly', price: '3', priceCurrency: 'USD', url: PRO_MONTHLY_URL },
+    { '@type': 'Offer', name: 'Mellow Pro, yearly', price: '20', priceCurrency: 'USD', url: PRO_YEARLY_URL },
+  ],
   featureList: [
     'Dark mode for Google Docs with a dark page, not just dark margins',
     'Images and charts keep their true colours',
     'Dark menus, toolbar and sidebars',
-    'Two-page book view',
+    'Writer sidebar: chapters from your headings, click to jump',
+    'Per-document note cards with search and Markdown export',
+    'Daily word goal with today and session counts',
     'Keyboard shortcuts',
-    'Settings sync across your Chrome profile',
   ],
   author: { '@type': 'Person', name: NAME, url: new URL(url('/'), Astro.site).href },
+});
+
+const videoLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: 'Mellow for Google Docs – Novel Writing Sidebar: Chapters, Notes, Word Goal & Dark Mode',
+  description: 'A 35-second tour of Mellow for Google Docs: the writer sidebar with chapters, notes and a daily word goal, and a dark mode that keeps images in true colour.',
+  thumbnailUrl: `https://i.ytimg.com/vi/${VIDEO_ID}/hqdefault.jpg`,
+  uploadDate: '2026-10-27',
+  duration: 'PT35S',
+  contentUrl: VIDEO_URL,
+  embedUrl: `https://www.youtube.com/embed/${VIDEO_ID}`,
 });
 
 const faqLd = JSON.stringify({
@@ -84,18 +106,31 @@ const faqLd = JSON.stringify({
 <Base title={title} description={description} ogImage="/og/mellow.png">
   <Fragment slot="head">
     <script type="application/ld+json" set:html={appLd} />
+    <script type="application/ld+json" set:html={videoLd} />
     <script type="application/ld+json" set:html={faqLd} />
   </Fragment>
 
-  <h1>Mellow: dark mode for Google Docs</h1>
+  <h1>Mellow for Google Docs</h1>
   <p class="lede">
-    A free Chrome extension that makes the Google Docs page itself dark, with light text, while your
-    images keep their true colours. Plus a two-page view, like an open book.
+    A Chrome extension that makes the Google Docs page itself dark, with light text, while your
+    images keep their true colours. Plus a writer sidebar beside your draft: chapters, notes and a
+    daily word goal.
   </p>
 
   <p class="cta">
     <a class="button" href={STORE_URL}>Add Mellow to Chrome, free</a>
   </p>
+
+  <div class="video">
+    <iframe
+      src={`https://www.youtube-nocookie.com/embed/${VIDEO_ID}`}
+      title="Mellow for Google Docs in 35 seconds"
+      loading="lazy"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen></iframe>
+  </div>
+  <p class="muted">Mellow in 35 seconds. <a href={VIDEO_URL}>Watch on YouTube</a>.</p>
 
   <div class="prose">
     <h2>What Mellow does</h2>
@@ -109,18 +144,31 @@ const faqLd = JSON.stringify({
         should, not like photo negatives.
       </li>
       <li>
-        <strong>Two pages side by side.</strong> Book mode shows the next page beside the one you’re
-        editing. Click the right-hand page to turn to it; scrolling moves a page at a time.
+        <strong>Writer sidebar.</strong> A panel beside your draft with three tabs:
+        <ul>
+          <li><strong>Chapters</strong> lists your headings. Click one to jump to it; the chapter you’re in is highlighted.</li>
+          <li><strong>Notes</strong> keeps cards for characters, places and plot threads, saved per document. Colour them, search them, export them as Markdown.</li>
+          <li><strong>Goal</strong> sets a daily word target (1,667 by default, NaNoWriMo pace) and shows words written today and this session.</li>
+        </ul>
       </li>
       <li>
         <strong>Keyboard shortcuts.</strong> <kbd>Option+Shift+D</kbd> for dark mode,
-        <kbd>Option+Shift+B</kbd> for book mode (Alt+Shift on Windows), or use the toolbar button.
+        <kbd>Option+Shift+W</kbd> for the writer sidebar (Alt+Shift on Windows), or use the toolbar
+        button.
       </li>
       <li>
-        <strong>Private.</strong> No account, no tracking, no network requests. Your settings sync
-        through your own Chrome profile.
+        <strong>Private.</strong> No account, no tracking. Your notes, goals and settings stay in
+        your own Chrome storage.
       </li>
     </ul>
+
+    <h2>Free and Pro</h2>
+    <p>
+      Dark mode, Chapters, Goal and up to 5 note cards per document are free.
+      <strong>Mellow Pro</strong> removes the note limit: <a href={PRO_MONTHLY_URL}>$3 a month</a>
+      or <a href={PRO_YEARLY_URL}>$20 a year</a>. You get a licence key by email; paste it into the
+      Mellow popup to activate. It works on up to 3 devices.
+    </p>
 
     <h2>Why most Google Docs dark modes look wrong</h2>
     <p>
@@ -146,7 +194,7 @@ const faqLd = JSON.stringify({
     <ol>
       <li>Open <a href={STORE_URL}>Mellow on the Chrome Web Store</a> and click <strong>Add to Chrome</strong>.</li>
       <li>Open or reload any Google Doc. Dark mode is on by default.</li>
-      <li>Click the Mellow icon in the toolbar to switch dark mode or book mode on and off.</li>
+      <li>Click the Mellow icon in the toolbar to switch dark mode or the writer sidebar on and off.</li>
     </ol>
     <p class="muted">
       Works in Chrome and other Chromium browsers that install from the Chrome Web Store, such as
@@ -166,7 +214,9 @@ const faqLd = JSON.stringify({
     <h2>Known limitations</h2>
     <ul>
       <li>Switching dark mode on or off reloads the document, because Docs has to redraw the page from the start.</li>
-      <li>On a narrow laptop window at 100% zoom, both pages of book mode may not fit with Docs’ tabs sidebar open. Close the sidebar or zoom out to about 90%.</li>
+      <li>Goal needs Docs’ word count badge: <strong>Tools → Word count → Display word count while typing</strong>. Docs forgets this setting between sessions, so Goal shows a hint when it’s off.</li>
+      <li>Chapters lists headings (Heading 1, 2, 3…). Text styled as normal text won’t appear.</li>
+      <li>Google changes Docs often. If something breaks after an update, email me and I’ll fix it.</li>
     </ul>
 
     <h2>Support and contact</h2>
@@ -198,6 +248,21 @@ const faqLd = JSON.stringify({
   .button:hover {
     background: var(--text);
     color: var(--bg);
+  }
+.video {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    margin: 0 0 0.5rem;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #000;
+  }
+  .video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
   }
   kbd {
     font-family: var(--mono);
