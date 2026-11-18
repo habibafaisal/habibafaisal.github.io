@@ -13,6 +13,7 @@ export const getStaticPaths = (async () => {
     { slug: 'writing', title: 'Writing', subtitle: siteName },
     { slug: 'about', title: 'About', subtitle: siteName },
     { slug: 'mellow', title: 'Mellow for Google Docs', subtitle: 'Dark mode and a writer sidebar' },
+    { slug: 'falcon', title: 'Falcon', subtitle: 'A Claude Code harness for careful projects' },
   ];
   const posts = (await getPosts()).map((p) => ({
     slug: `writing/${p.id}`,

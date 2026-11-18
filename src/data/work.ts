@@ -85,6 +85,11 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    name: 'Falcon',
+    href: '/falcon/',
+    body: 'An open-source Claude Code harness for codebases where a silent bug is expensive. Work is tiered by what a bug would corrupt, tests count only once seen failing, a fresh agent reviews, and every miss a human catches becomes an enforced check.',
+  },
+  {
     name: 'Mellow',
     href: '/mellow/',
     body: 'A Chrome extension that gives Google Docs a real dark mode: the page itself goes dark while images keep their true colours. Plus a writer sidebar with chapters, notes and a daily word goal. Free, with an optional Pro tier.',

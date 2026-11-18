@@ -1,0 +1,179 @@
+---
+import Base from '../../layouts/Base.astro';
+import { NAME, EMAIL } from '../../consts';
+import { url } from '../../lib/posts';
+
+const REPO_URL = 'https://github.com/habibafaisal/falcon';
+const METHOD_URL = `${REPO_URL}/blob/main/METHOD.md`;
+const CASES_URL = `${REPO_URL}/tree/main/examples/case-studies`;
+
+const VIDEO_ID = 'AUtNaEk-cLc';
+const VIDEO_URL = `https://youtu.be/${VIDEO_ID}`;
+
+const title = 'Falcon: a Claude Code harness for codebases where a silent bug is expensive';
+const description =
+  'Falcon is an open-source Claude Code harness for careful projects (money, health, auth, data, infra): risk-tiered ownership, tests seen failing, independent review, and every caught miss turned into a check.';
+
+const appLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareSourceCode',
+  name: 'Falcon',
+  description,
+  codeRepository: REPO_URL,
+  programmingLanguage: 'Python',
+  license: 'https://opensource.org/licenses/MIT',
+  url: new URL(url('/falcon/'), Astro.site).href,
+  author: { '@type': 'Person', name: NAME, url: new URL(url('/'), Astro.site).href },
+});
+
+const videoLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: 'Claude Code Workflow That Catches Silent Bugs: AI Coding Agent Harness (Falcon)',
+  description:
+    'A walkthrough that follows one change, a fee split on a money platform, through every step of Falcon: install, planning, the codebase oracle, test-first build, review, mutation sweep, operator testing and the guard ladder.',
+  thumbnailUrl: `https://i.ytimg.com/vi/${VIDEO_ID}/hqdefault.jpg`,
+  uploadDate: '2026-10-27',
+  duration: 'PT2M36S',
+  contentUrl: VIDEO_URL,
+  embedUrl: `https://www.youtube.com/embed/${VIDEO_ID}`,
+});
+---
+
+<Base title={title} description={description} ogImage="/og/falcon.png">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={appLd} />
+    <script type="application/ld+json" set:html={videoLd} />
+  </Fragment>
+
+  <h1>Falcon</h1>
+  <p class="lede">
+    A Claude Code harness for codebases where a <em>silent</em> bug is expensive: the kind that
+    passes its own tests and is wrong anyway. Money, health, auth, data pipelines, infrastructure.
+  </p>
+
+  <p class="cta">
+    <a class="button" href={REPO_URL}>Falcon on GitHub</a>
+  </p>
+
+  <div class="video">
+    <iframe
+      src={`https://www.youtube-nocookie.com/embed/${VIDEO_ID}`}
+      title="Falcon walkthrough"
+      loading="lazy"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen></iframe>
+  </div>
+  <p class="muted">One change, a fee split, followed through every step. <a href={VIDEO_URL}>Watch on YouTube</a>.</p>
+
+  <div class="prose">
+    <h2>Why I built it</h2>
+    <p>
+      Our tests passed, but the ledger was off from the bank. The agent had written the code and the
+      tests in the same session, so the tests agreed with the code and both were wrong. A balanced
+      ledger sums to zero either way, so no balance check could have told them apart.
+    </p>
+    <p>
+      Test-first doesn’t help when the same mind writes the reading of the spec, the test and the
+      code. Most agent harnesses spend the same process on every change. Falcon spends it where a
+      silent bug would cost something.
+    </p>
+
+    <h2>How it works</h2>
+    <ul>
+      <li>
+        <strong>Risk-tiered ownership.</strong> Work is tiered by what a silent bug would corrupt,
+        not by how hard it looks. Boilerplate is delegated. Critical code is UNDERSTAND-IT: the
+        human hears the design one concept at a time and ratifies a plan before any code is
+        written.
+      </li>
+      <li>
+        <strong>Graded evidence, independent review.</strong> Nothing is just “done”. The builder
+        never verifies its own work; a fresh agent does. A test only counts once it’s been seen
+        failing with its guard broken.
+      </li>
+      <li>
+        <strong>Misses become checks.</strong> Every miss a human catches becomes an escape record
+        and an enforced check in the same session, not a note.
+      </li>
+      <li>
+        <strong>A guard ladder.</strong> Rules that get broken move from prose, to failing checks, to
+        hooks that block.
+      </li>
+      <li>
+        <strong>State lives in the repo.</strong> Tiers, plans, the mistake log and the session
+        handoff are files, so they survive <code>/clear</code> and get reviewed like code.
+      </li>
+    </ul>
+
+    <h2>Results so far</h2>
+    <ul>
+      <li><strong>20 escapes</strong>: misses a human caught after every automated layer passed. Each shipped a new check the same session.</li>
+      <li><strong>27 mistake classes</strong> logged, each with the guard that stops it.</li>
+      <li>
+        <strong>2 recurrences</strong> after a guard existed, and both were the guard ladder at
+        work: a prose rule that became a check, and a check widened from twin functions to twin
+        entry points.
+      </li>
+    </ul>
+    <p>
+      The <a href={CASES_URL}>case studies</a> walk through seven of those misses and the check each
+      one produced. <a href={METHOD_URL}>METHOD.md</a> explains the loops one at a time.
+    </p>
+
+    <h2>Install</h2>
+    <p>Once per machine, clone Falcon and add the <code>falcon-init</code> skill:</p>
+    <pre><code>git clone https://github.com/habibafaisal/falcon.git ~/falcon
+mkdir -p ~/.claude/skills && cp -r ~/falcon/skills/falcon-init ~/.claude/skills/</code></pre>
+    <p>
+      Then open Claude Code in your repo and say <strong>“set up falcon”</strong>. It copies the
+      files in and runs a short interview where you choose what counts as UNDERSTAND-IT for your
+      domain. Your choices are recorded as the project’s first decision record.
+    </p>
+    <p class="muted">MIT licensed. Falcon is not affiliated with Anthropic.</p>
+
+    <h2>Contact</h2>
+    <p>
+      Falcon is built by <a href={url('/')}>{NAME}</a>. Questions or a miss Falcon didn’t catch?
+      Email <a href={`mailto:${EMAIL}?subject=Falcon`}>{EMAIL}</a> or open an issue on
+      <a href={REPO_URL}>GitHub</a>.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .cta {
+    margin: 1.5rem 0 2rem;
+  }
+  .button {
+    display: inline-block;
+    padding: 0.6rem 1.1rem;
+    border: 1px solid currentColor;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .button:hover {
+    background: var(--text);
+    color: var(--bg);
+  }
+  .video {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    margin: 0 0 0.5rem;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #000;
+  }
+  .video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  pre {
+    overflow-x: auto;
+  }
+</style>
