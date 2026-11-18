@@ -4,14 +4,14 @@ description: One place for the work I've done, and a place to write.
 date: 2026-10-22
 ---
 
-I wanted one place for everything I've done. Most of my work lives inside products that never had my name on them, or that never launched. A resume doesn't hold that well.
+i wanted one place for everything i've done. most of my work lives inside products that never had my name on them, or that never launched. a resume doesn't hold that well.
 
-I also wanted a place to write and ship. Writing makes me finish a thought. Shipping makes me finish the thing.
+i also wanted a place to write and ship. writing makes me finish a thought. shipping makes me finish the thing.
 
-I'll write about three things here:
+i'll write about three things here:
 
-- Fintech and credit systems, and what I'm learning about them.
-- Building in a domain you don't know yet.
-- Product work as an engineer: finding the real problem behind a request, and checking whether the fix worked.
+- fintech and credit systems, and what i'm learning about them.
+- building in a domain you don't know yet.
+- product work as an engineer: finding the real problem behind a request, and checking whether the fix worked.
 
-Posts will be short. Some will be wrong, and I'll say so when I find out.
+posts will be short. some will be wrong, and i'll say so when i find out.
