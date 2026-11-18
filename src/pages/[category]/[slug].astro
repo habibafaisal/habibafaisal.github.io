@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import { render } from 'astro:content';
+import { formatDate, getPosts, url } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts
+    .filter((post) => !post.id.startsWith('writing/'))
+    .map((post) => {
+      const [category, slug] = post.id.split('/');
+      return { params: { category, slug }, props: { post } };
+    });
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const category = post.id.split('/')[0];
+---
+
+<Base title={post.data.title} description={post.data.description} type="article" date={post.data.date} ogImage={`/og/${post.id}.png`}>
+  <article>
+    <header class="post-header">
+      <h1>{post.data.title}</h1>
+      <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+      {post.data.updated && <div class="mono">Updated <time datetime={post.data.updated.toISOString()}>{formatDate(post.data.updated)}</time></div>}
+      {post.data.tags && post.data.tags.length > 0 && <div class="mono">{post.data.tags.join(', ')}</div>}
+    </header>
+    <div class="prose"><Content /></div>
+  </article>
+  <p class="back"><a href={url(`/${category}/`)}>← All {category}</a></p>
+</Base>

@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import { formatDate, getPosts, getPostsInCategory, postPath, url } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const categories = new Set((await getPosts()).map((post) => post.id.split('/')[0]));
+  categories.delete('writing');
+  return [...categories].map((category) => ({ params: { category } }));
+}
+
+const { category } = Astro.params;
+const posts = await getPostsInCategory(category!);
+const title = category!.replace(/-/g, ' ');
+---
+
+<Base title={title} description={`Posts in ${title}.`}>
+  <h1>{title}</h1>
+  <ul class="list post-list" style="margin-top:2.25rem">
+    {posts.map((post) => (
+      <li>
+        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+        <span>
+          <a class="title" href={url(postPath(post.id))}>{post.data.title}</a>
+          <span class="desc">{post.data.description}</span>
+        </span>
+      </li>
+    ))}
+  </ul>
+</Base>

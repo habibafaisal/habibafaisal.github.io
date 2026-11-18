@@ -1,11 +1,11 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { render } from 'astro:content';
-import { getPosts, formatDate, url } from '../../lib/posts';
+import { getPostsInCategory, formatDate, url } from '../../lib/posts';
 
 export async function getStaticPaths() {
-  const posts = await getPosts(); // drafts excluded
-  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+  const posts = await getPostsInCategory('writing');
+  return posts.map((post) => ({ params: { slug: post.id.split('/').at(-1)! }, props: { post } }));
 }
 
 const { post } = Astro.props;

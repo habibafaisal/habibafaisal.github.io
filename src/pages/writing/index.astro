@@ -1,8 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getPosts, formatDate, url } from '../../lib/posts';
+import { getPostsInCategory, formatDate, url, postPath } from '../../lib/posts';
 
-const posts = await getPosts();
+const posts = await getPostsInCategory('writing');
 
 // Writing published on other sites. Newest first.
 const elsewhere = [
@@ -29,7 +29,7 @@ const elsewhere = [
           <li>
             <time datetime={p.data.date.toISOString()}>{formatDate(p.data.date)}</time>
             <span>
-              <a class="title" href={url(`/writing/${p.id}/`)}>{p.data.title}</a>
+              <a class="title" href={url(postPath(p.id))}>{p.data.title}</a>
               <span class="desc">{p.data.description}</span>
             </span>
           </li>

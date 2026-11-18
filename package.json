@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
+    "editor": "node scripts/editor.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"

@@ -5,9 +5,9 @@ import { NAME, SITE_DESCRIPTION, EMAIL } from '../consts';
 const description =
   'Habiba Faisal, software engineer in Karachi. Core systems for a US invoice-factoring fintech, ingredient-safety scoring at Sail Wellness, and two property-management apps at Livedin.';
 import { work } from '../data/work';
-import { getPosts, formatDate, url } from '../lib/posts';
+import { getPostsInCategory, formatDate, url, postPath } from '../lib/posts';
 
-const posts = (await getPosts()).slice(0, 5);
+const posts = (await getPostsInCategory('writing')).slice(0, 5);
 ---
 
 <Base description={description} ogImage="/og/home.png">
@@ -43,7 +43,7 @@ const posts = (await getPosts()).slice(0, 5);
         {posts.map((p) => (
           <li>
             <time datetime={p.data.date.toISOString()}>{formatDate(p.data.date)}</time>
-            <a href={url(`/writing/${p.id}/`)}>{p.data.title}</a>
+            <a href={url(postPath(p.id))}>{p.data.title}</a>
           </li>
         ))}
       </ul>

@@ -2,8 +2,17 @@ import { getCollection } from 'astro:content';
 
 /** All published posts, newest first. Drafts are excluded everywhere via this helper. */
 export async function getPosts() {
-  const posts = await getCollection('writing', ({ data }) => !data.draft);
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
   return posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+}
+
+export async function getPostsInCategory(category: string) {
+  const posts = await getPosts();
+  return posts.filter((post) => post.id.startsWith(`${category}/`));
+}
+
+export function postPath(id: string) {
+  return `/${id}/`;
 }
 
 export function formatDate(date: Date) {

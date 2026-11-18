@@ -19,7 +19,7 @@ export async function GET(context: APIContext) {
       description: post.data.description,
       pubDate: post.data.date,
       categories: post.data.tags,
-      link: `${base}/writing/${post.id}/`,
+      link: `${base}/${post.id}/`,
       content: sanitizeHtml(marked.parse(post.body ?? '', { async: false }), {
         allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
       }),

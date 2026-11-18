@@ -1,9 +1,9 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-const writing = defineCollection({
+const posts = defineCollection({
   // Files starting with "_" (e.g. _example-draft.md) are never loaded.
-  loader: glob({ pattern: ['**/*.md', '!**/_*.md'], base: './src/content/writing' }),
+  loader: glob({ pattern: ['*/*.md', '!*/_*.md'], base: './src/content' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -14,4 +14,4 @@ const writing = defineCollection({
   }),
 });
 
-export const collections = { writing };
+export const collections = { posts };
