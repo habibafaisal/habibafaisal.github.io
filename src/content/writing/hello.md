@@ -1,5 +1,5 @@
 ---
-title: Why I built this
+title: why i built this
 description: One place for the work I've done, and a place to write.
 date: 2026-10-22
 ---
