@@ -27,7 +27,9 @@ function parsePost(source, path) {
     return [key, trimmed.startsWith('"') ? JSON.parse(trimmed) : trimmed];
   }));
   const id = relative(contentRoot, path).replace(/\\/g, '/').replace(/\.md$/, '');
-  return { id, category: id.split('/')[0], slug: id.split('/')[1], body: match[2].trimEnd(), ...fields };
+  const [directory, slug] = id.split('/');
+  const kind = directory === 'pages' ? 'page' : 'post';
+  return { id, kind, category: kind === 'page' ? 'page' : directory, slug, body: match[2].trimEnd(), ...fields };
 }
 
 async function filesIn(directory) {
@@ -52,10 +54,17 @@ async function readBody(request) {
 }
 
 async function savePost(data) {
-  const category = cleanSegment(data.category);
   const slug = cleanSegment(data.slug || data.title);
+  const isPage = data.kind === 'page';
+  const category = isPage ? 'pages' : cleanSegment(data.category);
   const path = resolve(contentRoot, category, `${slug}.md`);
   if (!path.startsWith(`${contentRoot}${sep}`)) throw new Error('Invalid post path.');
+  if (isPage) {
+    const frontMatter = ['---', `title: ${quote(data.title)}`, `description: ${quote(data.description || '')}`, '---'].join('\n');
+    await mkdir(dirname(path), { recursive: true });
+    await writeFile(path, `${frontMatter}\n\n${String(data.body || '').trim()}\n`, 'utf8');
+    return { id: slug };
+  }
   const today = new Date().toISOString().slice(0, 10);
   let date = today;
   let updated = '';
@@ -87,12 +96,12 @@ const page = `<!doctype html>
   :root{font-family:system-ui,sans-serif;color:#1c1b19;background:#fbfaf7}body{max-width:1100px;margin:0 auto;padding:32px 20px}header{display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid #e4e0d8;padding-bottom:18px}h1{font-size:24px;margin:0}main{display:grid;grid-template-columns:260px 1fr;gap:32px;margin-top:28px}button,input,textarea,select{font:inherit}button{cursor:pointer;border:1px solid #9a3b1f;background:#9a3b1f;color:#fff;border-radius:5px;padding:8px 12px}button.secondary{background:transparent;color:#9a3b1f}#posts{display:grid;gap:8px}.post{width:100%;text-align:left;background:transparent;color:#1c1b19;border:1px solid #e4e0d8}.post small{display:block;color:#6b6760;margin-top:3px}form{display:grid;gap:16px}label{display:grid;gap:6px;font-size:14px;font-weight:600}input,textarea,select{border:1px solid #bdb7ad;border-radius:5px;padding:9px;background:#fff;color:#1c1b19}textarea{min-height:340px;line-height:1.55;font-family:ui-monospace,SFMono-Regular,monospace}.row{display:grid;grid-template-columns:1fr 1fr 150px;gap:12px}.actions{display:flex;gap:10px;align-items:center}.status{color:#6b6760;font-size:14px}@media(max-width:700px){main{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
 </style>
 <body><header><div><h1>Site editor</h1><div class="status">Saves Markdown locally. Publish commits and pushes to GitHub.</div></div><button id="publish">Publish changes</button></header>
-<main><aside><button class="secondary" id="new">+ New post</button><div id="posts"></div></aside><section><form id="form"><div class="row"><label>Category<input name="category" placeholder="writing" required></label><label>Slug<input name="slug" placeholder="generated from title"></label></div><label>Title<input name="title" required></label><label>Description<input name="description" required></label><label>Content (Markdown)<textarea name="body" required></textarea></label><label><span><input name="draft" type="checkbox"> Keep as draft</span></label><div class="actions"><button>Save locally</button><span id="status" class="status"></span></div></form></section></main>
+<main><aside><button class="secondary" id="new">+ New post</button><div id="posts"></div></aside><section><form id="form"><input name="kind" type="hidden" value="post"><div class="row"><label>Category<input name="category" placeholder="writing" required></label><label>Slug<input name="slug" placeholder="generated from title"></label></div><label>Title<input name="title" required></label><label>Description<input name="description" required></label><label>Content (Markdown)<textarea name="body" required></textarea></label><label><span><input name="draft" type="checkbox"> Keep as draft</span></label><div class="actions"><button>Save locally</button><span id="status" class="status"></span></div></form></section></main>
 <script>
 const form=document.querySelector('#form'), posts=document.querySelector('#posts'), status=document.querySelector('#status');
 let all=[];
-function fill(post={category:'writing',title:'',description:'',slug:'',body:'',draft:false}){for(const [key,value] of Object.entries(post)){const field=form.elements[key];if(field)field.type==='checkbox'?field.checked=value==='true'||value===true:field.value=value}status.textContent=''}
-async function load(){all=await fetch('/api/posts').then(r=>r.json());posts.innerHTML='';for(const post of all.sort((a,b)=>b.date.localeCompare(a.date))){const button=document.createElement('button');button.type='button';button.className='post';button.innerHTML=post.title+'<small>'+post.category+'/'+post.slug+'</small>';button.onclick=()=>fill(post);posts.append(button)}}
+function fill(post={kind:'post',category:'writing',title:'',description:'',slug:'',body:'',draft:false}){for(const [key,value] of Object.entries(post)){const field=form.elements[key];if(field)field.type==='checkbox'?field.checked=value==='true'||value===true:field.value=value}const page=post.kind==='page';form.elements.category.disabled=page;form.elements.draft.disabled=page;status.textContent=''}
+async function load(){all=await fetch('/api/posts').then(r=>r.json());posts.innerHTML='';for(const post of all.sort((a,b)=>(b.date||'').localeCompare(a.date||''))){const button=document.createElement('button');button.type='button';button.className='post';button.textContent=post.title;const detail=document.createElement('small');detail.textContent=post.kind==='page'?'page /'+post.slug:post.category+'/'+post.slug;button.append(detail);button.onclick=()=>fill(post);posts.append(button)}}
 async function request(url, options){const response=await fetch(url,options);const result=await response.json();if(!response.ok)throw Error(result.error);return result}
 form.onsubmit=async event=>{event.preventDefault();status.textContent='Saving…';try{const data=Object.fromEntries(new FormData(form));data.draft=form.elements.draft.checked;const result=await request('/api/posts',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(data)});status.textContent='Saved '+result.id+'. Publish when ready.';await load()}catch(error){status.textContent=error.message}}
 document.querySelector('#new').onclick=()=>fill();document.querySelector('#publish').onclick=async()=>{status.textContent='Publishing…';try{const result=await request('/api/publish',{method:'POST'});status.textContent=result.message}catch(error){status.textContent=error.message}};load();

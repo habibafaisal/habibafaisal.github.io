@@ -3,7 +3,7 @@ import { glob } from 'astro/loaders';
 
 const posts = defineCollection({
   // Files starting with "_" (e.g. _example-draft.md) are never loaded.
-  loader: glob({ pattern: ['*/*.md', '!*/_*.md'], base: './src/content' }),
+  loader: glob({ pattern: ['*/*.md', '!pages/*.md', '!*/_*.md'], base: './src/content' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -14,4 +14,12 @@ const posts = defineCollection({
   }),
 });
 
-export const collections = { posts };
+const pages = defineCollection({
+  loader: glob({ pattern: ['*.md'], base: './src/content/pages' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+  }),
+});
+
+export const collections = { posts, pages };
